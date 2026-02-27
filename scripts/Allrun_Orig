@@ -1,0 +1,22 @@
+#!/bin/bash
+
+CWD=$(pwd)
+
+## Launch HEGEL -----------------------------------
+timeout 21h /projects/illinois/grants/chess/mkuppa/libraries/hegel_27_01_25_wPRECICE/hegel-install-gcc-12.4.0/bin/hegel timeacc_SL > HEGEL.log 2>&1 &
+PID1=$!
+
+## Launch PATO ------------------------------------
+# copy initial fields
+cp -r origin.0 0
+
+# create polyMesh
+blockMesh -region porousMat
+
+# run PATOx
+timeout 21h PATOx > PATO.log 2>&1 &
+PID2=$!
+
+
+wait $PID1
+wait $PID2
